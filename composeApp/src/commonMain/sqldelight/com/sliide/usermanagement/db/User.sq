@@ -1,0 +1,38 @@
+CREATE TABLE UserEntity (
+    id INTEGER NOT NULL PRIMARY KEY,
+    name TEXT NOT NULL,
+    email TEXT NOT NULL,
+    gender TEXT NOT NULL,
+    status TEXT NOT NULL,
+    createdAt TEXT NOT NULL
+);
+
+-- Get all users ordered by creation time descending (newest first)
+selectAll:
+SELECT *
+FROM UserEntity
+ORDER BY id DESC;
+
+-- Insert or replace a user
+insertOrReplace:
+INSERT OR REPLACE INTO UserEntity(id, name, email, gender, status, createdAt)
+VALUES (?, ?, ?, ?, ?, ?);
+
+-- Delete a user by id
+deleteById:
+DELETE FROM UserEntity
+WHERE id = ?;
+
+-- Get a single user
+selectById:
+SELECT *
+FROM UserEntity
+WHERE id = ?;
+
+-- Delete all users (for cache invalidation)
+deleteAll:
+DELETE FROM UserEntity;
+
+-- Count users
+count:
+SELECT COUNT(*) FROM UserEntity;
