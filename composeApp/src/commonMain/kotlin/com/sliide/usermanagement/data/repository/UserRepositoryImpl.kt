@@ -31,7 +31,7 @@ class UserRepositoryImpl(
 
     override suspend fun refreshUsers(): Result<Unit> {
         return try {
-            val result = apiService.getLastPageUsers()
+            val result = apiService.getLatestUsers()
             if (result.isSuccess) {
                 val users = result.getOrThrow()
                 database.transaction {

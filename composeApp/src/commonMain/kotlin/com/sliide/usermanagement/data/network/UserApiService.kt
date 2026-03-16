@@ -71,6 +71,23 @@ class UserApiService(
     }
 
     /**
+     * Fetches the most recently created users
+     * **/
+    suspend fun getLatestUsers(): Result<List<UserDto>> {
+        return try {
+            val response: HttpResponse = client.get("$BASE_URL/users") {
+                bearerAuth(token)
+                parameter("page", 1)
+                parameter("per_page", 20)
+            }
+            val users: List<UserDto> = response.body()
+            Result.success(users)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    /**
      * Creates a new user. Returns 201 on success.
      * On 422, parses GoRest's validation error list and surfaces a readable message.
      */
