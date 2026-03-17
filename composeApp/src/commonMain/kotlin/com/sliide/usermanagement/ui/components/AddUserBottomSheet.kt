@@ -21,6 +21,10 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.platform.LocalFocusManager
@@ -41,6 +45,9 @@ fun AddUserBottomSheet(
 ) {
     val focusManager = LocalFocusManager.current
 
+    var nameValue by remember { mutableStateOf("") }
+    var emailValue by remember { mutableStateOf("") }
+
     ModalBottomSheet(
         onDismissRequest = { onEvent(UserEvent.HideAddUser) },
         sheetState = sheetState
@@ -60,8 +67,11 @@ fun AddUserBottomSheet(
 
             // Name field
             OutlinedTextField(
-                value = state.name,
-                onValueChange = { onEvent(UserEvent.NameChanged(it)) },
+                value = nameValue,
+                onValueChange = {
+                    nameValue = it
+                    onEvent(UserEvent.NameChanged(it))
+                },
                 label = { Text("Full Name") },
                 placeholder = { Text("e.g. Jane Smith") },
                 isError = state.nameError != null,
@@ -81,8 +91,11 @@ fun AddUserBottomSheet(
 
             // Email field
             OutlinedTextField(
-                value = state.email,
-                onValueChange = { onEvent(UserEvent.EmailChanged(it)) },
+                value = emailValue,
+                onValueChange = {
+                    emailValue = it
+                    onEvent(UserEvent.EmailChanged(it))
+                },
                 label = { Text("Email Address") },
                 placeholder = { Text("e.g. jane@example.com") },
                 isError = state.emailError != null,

@@ -228,4 +228,5 @@ This project was built with Claude as an AI coding assistant. In line with the s
 - Expand test coverage to include repository-level tests with a fake SQLDelight driver
 - Set up CICD running tests on both Android and iOS
 - Set up multi-module with a `build-logic` layer to allow the application to scale
+- Add screenshot tests
 - Implement proper SQLDelight migrations for schema changes rather than clearing app data
