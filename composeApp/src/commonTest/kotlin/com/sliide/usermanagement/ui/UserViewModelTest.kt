@@ -61,7 +61,13 @@ class UserViewModelTest {
     fun `after refresh loading becomes false and users are populated`() = runTest {
         viewModel.uiState.test {
             testDispatcher.scheduler.advanceUntilIdle()
-            val state = awaitItem()
+
+            // Skip intermediate states until we reach the final loaded state
+            var state = awaitItem()
+            while (state.isLoading || state.users.isEmpty()) {
+                state = awaitItem()
+            }
+
             assertFalse(state.isLoading)
             assertTrue(state.users.isNotEmpty())
             cancelAndIgnoreRemainingEvents()
@@ -145,7 +151,7 @@ class UserViewModelTest {
         testDispatcher.scheduler.advanceUntilIdle()
 
         viewModel.onEvent(UserEvent.RequestDelete(sampleUser))
-        testDispatcher.scheduler.advanceUntilIdle()
+        testDispatcher.scheduler.advanceTimeBy(100)
 
         assertFalse(viewModel.uiState.value.users.any { it.id == sampleUser.id })
         assertNotNull(viewModel.uiState.value.pendingDelete)
@@ -157,7 +163,7 @@ class UserViewModelTest {
         testDispatcher.scheduler.advanceUntilIdle()
 
         viewModel.onEvent(UserEvent.RequestDelete(sampleUser))
-        testDispatcher.scheduler.advanceUntilIdle()
+        testDispatcher.scheduler.advanceTimeBy(100)
         viewModel.onEvent(UserEvent.UndoDelete)
         testDispatcher.scheduler.advanceUntilIdle()
 
@@ -185,7 +191,8 @@ class UserViewModelTest {
         testDispatcher.scheduler.advanceUntilIdle()
 
         viewModel.onEvent(UserEvent.RequestDelete(sampleUser))
-        testDispatcher.scheduler.advanceUntilIdle()
+        testDispatcher.scheduler.advanceTimeBy(100) // advance enough for delete to process but not past undo window
+
         viewModel.onEvent(UserEvent.UndoDelete)
         testDispatcher.scheduler.advanceUntilIdle()
 
