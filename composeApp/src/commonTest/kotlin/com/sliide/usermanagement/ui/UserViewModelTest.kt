@@ -58,7 +58,7 @@ class UserViewModelTest {
     }
 
     @Test
-    fun `after refresh, loading becomes false and users are populated`() = runTest {
+    fun `after refresh loading becomes false and users are populated`() = runTest {
         viewModel.uiState.test {
             testDispatcher.scheduler.advanceUntilIdle()
             val state = awaitItem()
