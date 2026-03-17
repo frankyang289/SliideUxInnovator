@@ -223,6 +223,7 @@ This project was built with Claude as an AI coding assistant. In line with the s
 
 ## What I'd Do With More Time
 
+- Fix the adaptive layout/master-detail issue on iOS
 - Add pagination to the user list (infinite scroll loading more pages)
 - Add user detail editing (PATCH endpoint)
 - Expand test coverage to include repository-level tests with a fake SQLDelight driver
